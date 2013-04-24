@@ -1,7 +1,7 @@
 var install = require('../src/install'),
     android = require('../src/platforms/android'),
     ios     = require('../src/platforms/ios'),
-    blackberry = require('../src/platforms/blackberry'),
+    blackberry10 = require('../src/platforms/blackberry10'),
     plugman = require('../plugman'),
     fs      = require('fs'),
     os      = require('osenv'),
@@ -13,7 +13,7 @@ var install = require('../src/install'),
     variableplugin = path.join(__dirname, 'plugins', 'VariablePlugin'),
     faultyplugin = path.join(__dirname, 'plugins', 'FaultyPlugin'),
     android_one_project = path.join(__dirname, 'projects', 'android_one', '*');
-    blackberry_project = path.join(__dirname, 'projects', 'blackberry', '*');
+    blackberry10_project = path.join(__dirname, 'projects', 'blackberry10', '*');
     ios_project = path.join(__dirname, 'projects', 'ios-config-xml', '*');
     plugins_dir = path.join(temp, 'cordova', 'plugins');
 
@@ -76,7 +76,7 @@ describe('install', function() {
 
             var executed_txs = s.mostRecentCall.args[0];
             expect(executed_txs.length).toEqual(0);
-        }); 
+        });
         it('should throw if plugin is already installed into project', function() {
             shell.cp('-rf', dummyplugin, plugins_dir);
             expect(function() {

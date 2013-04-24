@@ -43,15 +43,6 @@ function handlePlugin(action, plugin_id, txs, project_dir, plugin_dir, variables
         var mod = txs.shift();
         try {
             switch(mod.tag.toLowerCase()) {
-                case 'source-file':
-                    var destFile = path.join(mod.attrib['target-dir'], path.basename(mod.attrib['src']));
-
-                    if (action == 'install') {
-                        common.straightCopy(plugin_dir, mod.attrib['src'], project_dir, destFile);
-                    } else {
-                        common.deleteJava(project_dir, destFile);
-                    }
-                    break;
                 case 'config-file':
                     // Only modify config files that exist.
                     var config_file = path.resolve(project_dir, mod.attrib['target']);
@@ -82,8 +73,7 @@ function handlePlugin(action, plugin_id, txs, project_dir, plugin_dir, variables
                     }
                     break;
                 default:
-                    throw new Error('Unrecognized plugin.xml element/action in blackberry installer: ' + mod.tag);
-                    break;
+                    throw new Error('Unrecognized plugin.xml element/action in blackberry10 installer: ' + mod.tag);
             }
         } catch(e) {
             // propagate error up and provide completed tx log

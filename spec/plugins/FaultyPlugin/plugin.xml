@@ -27,7 +27,7 @@
 
 	<access origin="build.phonegap.com" />
 	<access origin="s3.amazonaws.com" />
-	
+
     <!-- android -->
     <platform name="android">
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
@@ -71,14 +71,11 @@
         <source-file src="src/ios/FaultyPluginCommand.m" />
 
     </platform>
-    <platform name="blackberry">
+    <platform name="blackberry10">
         <config-file target="config.xml" parent="/widget">
             <feature id="cordova.echo" required="true" version="1.0.0.0"/>
         </config-file>
-
-        <source-file src="src/blackberry/client.js" target-dir="ext-qnx/cordova.echo" />
-        <!-- these dont exist -->
-        <source-file src="src/blackberry/device/echoJnext.so" target-dir="ext-qnx/cordova.echo/device" />
+        <!-- these tags are unsupported -->
         <source-file src="src/blackberry/simulator/echoJnext.so" target-dir="ext-qnx/cordova.echo/simulator" />
     </platform>
 </plugin>

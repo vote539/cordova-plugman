@@ -2,7 +2,7 @@ var uninstall = require('../src/uninstall'),
     install = require('../src/install'),
     android = require('../src/platforms/android'),
     ios     = require('../src/platforms/ios'),
-    blackberry = require('../src/platforms/blackberry'),
+    blackberry10 = require('../src/platforms/blackberry10'),
     plugman = require('../plugman'),
     fs      = require('fs'),
     os      = require('osenv'),
@@ -14,7 +14,7 @@ var uninstall = require('../src/uninstall'),
     variableplugin = path.join(__dirname, 'plugins', 'VariablePlugin'),
     faultyplugin = path.join(__dirname, 'plugins', 'FaultyPlugin'),
     android_one_project = path.join(__dirname, 'projects', 'android_one', '*');
-    blackberry_project = path.join(__dirname, 'projects', 'blackberry', '*');
+    blackberry10_project = path.join(__dirname, 'projects', 'blackberry10', '*');
     ios_project = path.join(__dirname, 'projects', 'ios-config-xml', '*');
     plugins_dir = path.join(temp, 'cordova', 'plugins');
 
@@ -48,6 +48,6 @@ describe('uninstall', function() {
                 uninstall('android', temp, 'SomePlugin', plugins_dir, {});
             }).toThrow('Plugin "SomePlugin" not found. Already uninstalled?');
         });
-        it('should handle a failed uninstall by passing completed transactions into appropriate handler\'s uninstall method'); 
+        it('should handle a failed uninstall by passing completed transactions into appropriate handler\'s uninstall method');
     });
 });
