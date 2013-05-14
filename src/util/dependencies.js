@@ -49,7 +49,8 @@ exports.installAll = function(platform, project_dir, name, plugins_dir, cli_vari
             }
 
             console.log('Fetching dependency ' + dep.attrib.id);
-            fetch(dep.attrib.url, plugins_dir, false /* no link */, subdir, doInstall);
+            // TODO: Actual value for git_ref.
+            fetch(dep.attrib.url, plugins_dir, false /* no link */, subdir, undefined /* git_ref */, doInstall);
         }
     });
 };
