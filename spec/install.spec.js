@@ -1,5 +1,6 @@
 var install = require('../src/install'),
     android = require('../src/platforms/android'),
+    blackberry = require('../src/platforms/blackberry'),
     common = require('../src/platforms/common'),
     //ios     = require('../src/platforms/ios'),
     //blackberry = require('../src/platforms/blackberry'),
@@ -9,13 +10,15 @@ var install = require('../src/install'),
     os      = require('osenv'),
     path    = require('path'),
     shell   = require('shelljs'),
+    semver  = require('semver'),
     temp    = path.join(os.tmpdir(), 'plugman'),
     childbrowser = path.join(__dirname, 'plugins', 'ChildBrowser'),
     dummyplugin = path.join(__dirname, 'plugins', 'DummyPlugin'),
     variableplugin = path.join(__dirname, 'plugins', 'VariablePlugin'),
     faultyplugin = path.join(__dirname, 'plugins', 'FaultyPlugin'),
+    engineplugin = path.join(__dirname, 'plugins','EnginePlugin'),
     android_one_project = path.join(__dirname, 'projects', 'android_one', '*');
-    //blackberry_project = path.join(__dirname, 'projects', 'blackberry', '*');
+    blackberry_project = path.join(__dirname, 'projects', 'blackberry', '*');
     //ios_project = path.join(__dirname, 'projects', 'ios-config-xml', '*');
     plugins_dir = path.join(temp, 'cordova', 'plugins');
 
@@ -138,8 +141,14 @@ describe('install', function() {
             android_installer.mostRecentCall.args[5](null); // fake out handler install callback
             expect(spy).toHaveBeenCalledWith(plugins_dir, 'DummyPlugin', 'android', {});
         });
+        it('should check version if plugin has engine tag', function(){
+            shell.cp('-rf', engineplugin, plugins_dir);
+            var spy = spyOn(semver, 'satisfies').andCallThrough();
+            install('android', temp, 'engineplugin', plugins_dir, {});
+            expect(spy).toHaveBeenCalledWith('2.7.0rc1', '>=2.3.0');
+        });
     });
-
+    
     describe('failure', function() {
         it('should throw if asset target already exists', function() {
             shell.cp('-rf', dummyplugin, plugins_dir);
@@ -193,6 +202,8 @@ describe('install', function() {
            
             expect(fs.existsSync(path.join(temp, 'assets', 'www', 'dummyplugin.js'))).toBe(false);
             expect(fs.existsSync(path.join(temp, 'assets', 'www', 'dummyplugin'))).toBe(false);
+        });
+        if('should throw if cordova version isn\'t high enough', function(){
         });
     });
 });

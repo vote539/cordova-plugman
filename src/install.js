@@ -1,6 +1,8 @@
 var path = require('path'),
     fs   = require('fs'),
     et   = require('elementtree'),
+    shell = require('shelljs'),
+    semver = require('semver'),
     config_changes = require('./util/config-changes');
     platform_modules = require('./platforms');
 
@@ -41,6 +43,39 @@ function runInstall(platform, project_dir, plugin_dir, plugins_dir, cli_variable
     var name         = plugin_et.findall('name').text;
     var plugin_id    = plugin_et._root.attrib['id'];
     
+    // checking engine 
+    // will there be a case for multiple engine support?
+    var engines = plugin_et.findall('engines/engine');
+    engines.forEach(function(engine){
+        if(engine.attrib["name"].toLowerCase() === "cordova"){
+            var engineVersion = engine.attrib["version"];
+            var versionPath = path.join(project_dir, 'cordova', 'version');
+
+            // need to rethink this so I don't have to chmod anything
+            fs.chmodSync(versionPath, '755');
+            
+            var versionScript = shell.exec(versionPath, {silent: true});
+            if(versionScript.code>0){
+                var err = new Error('File missing: ' + versionPath);
+                if (callback) callback(err);
+                else throw err;           
+            }else{
+                // clean only versionScript.output since semver.clean strips out 
+                // the gt and lt operators
+                if(semver.satisfies(semver.clean(versionScript.output), engineVersion)){
+                    // engine ok!
+                    
+                }else{
+                    var err = new Error('Plugin doesn\'t support Cordova version. Check plugin.xml');
+                if (callback) callback(err);
+                    else throw err; 
+                }
+            }
+        }else{
+            // check for other engines?
+        }
+    });
+
     // checking preferences, if certain variables are not provided, we should throw.
     prefs = plugin_et.findall('./preference') || [];
     prefs = prefs.concat(plugin_et.findall('./platform[@name="'+platform+'"]/preference'));
