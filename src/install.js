@@ -65,6 +65,7 @@ function possiblyFetch(actions, platform, project_dir, id, plugins_dir, options)
 function checkEngines(engines) {
     for(var i = 0; i < engines.length; i++) {
         var engine = engines[i];
+        if(engine === null) continue;
         if(semver.satisfies(engine.currentVersion, engine.minVersion) || engine.currentVersion == null){
             // engine ok!
         }else{
